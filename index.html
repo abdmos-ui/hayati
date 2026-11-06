@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>حياتي</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#F07A2E">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+           font-family: system-ui, "Segoe UI", Tahoma, sans-serif; background: #F07A2E; color: #fff; text-align: center; padding: 16px; box-sizing: border-box; }
+    img { width: 96px; height: 96px; border-radius: 22px; }
+    a { color: #F07A2E; background: #fff; text-decoration: none; padding: 12px 28px; border-radius: 999px; font-weight: 600; }
+    #install { display: none; }
+  </style>
+</head>
+<body>
+  <img src="icons/icon-192.png" alt="">
+  <div>جاري فتح «حياتي»…</div>
+  <a id="open" href="https://claude.ai/artifact/Nie9SExV3G6NJutZzF93fd">افتح حياتي</a>
+  <a id="install" href="#">ثبّت التطبيق</a>
+  <script>
+    var TARGET = 'https://claude.ai/artifact/Nie9SExV3G6NJutZzF93fd';
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
+    var standalone = window.matchMedia('(display-mode: standalone)').matches;
+    if (standalone) {
+      // Opened from the installed app icon: go straight to the page.
+      location.replace(TARGET);
+    } else {
+      // Opened in the browser: offer installing first, then the link still works.
+      var deferred = null, btn = document.getElementById('install');
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault(); deferred = e; btn.style.display = 'inline-block';
+      });
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); if (!deferred) return;
+        deferred.prompt(); deferred = null; btn.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>
